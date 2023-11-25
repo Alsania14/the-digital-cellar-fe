@@ -2,12 +2,15 @@
   "compilerOptions": {
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "strictNullChecks": true,
+    "lib": ["dom", "dom.iterable", "esnext", "es6"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
@@ -19,6 +22,11 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/shared/presentation/layouts/dashboard-layout"
+  ],
   "exclude": ["node_modules"]
 }
