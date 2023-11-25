@@ -44,7 +44,6 @@ export default function SignInForm() {
     },
   });
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },

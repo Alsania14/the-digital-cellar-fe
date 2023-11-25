@@ -1,20 +1,10 @@
 import { Flex, Image, Text, Title } from '@mantine/core';
-import classes from './Welcome.module.css';
+import classes from './JumbotronTitle.module.css';
 
 export function JumbotronTitle() {
   return (
     <Title className={classes.title} ta="center">
       <Flex direction={{ base: 'column' }} justify="center" align="center">
-        <Text
-          inherit
-          variant="gradient"
-          fw={{ base: 700, md: 900 }}
-          fz={{ base: 30, md: 60 }}
-          component="span"
-          gradient={{ from: 'blue', to: 'purple' }}
-        >
-          THE DIGITAL CELLAR FE
-        </Text>
         <Image
           radius="md"
           h={{ base: 100, md: 250 }}
@@ -23,6 +13,17 @@ export function JumbotronTitle() {
           src="/logo.png"
           alt="The Digital Cellar"
         />
+        <Text
+          inherit
+          variant="gradient"
+          fw={{ base: 700, md: 900 }}
+          fz={{ base: 20, sm: 40 }}
+          component="span"
+          style={{ marginLeft: 50, marginRight: 50 }}
+          gradient={{ from: 'blue', to: 'purple' }}
+        >
+          THE DIGITAL CELLAR FE
+        </Text>
       </Flex>
     </Title>
   );
