@@ -1,11 +1,5 @@
-import { Welcome } from '../components/Welcome/Welcome';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
+import { JumbotronTitle } from '@/src/features/auth/presentation/components/Welcome/JumbotronTitle';
 
 export default function HomePage() {
-  return (
-    <>
-      <Welcome />
-      <ColorSchemeToggle />
-    </>
-  );
+  return <JumbotronTitle />;
 }
