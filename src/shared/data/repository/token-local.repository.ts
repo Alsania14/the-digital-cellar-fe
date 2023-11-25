@@ -1,11 +1,18 @@
 import { injectable } from 'inversify';
 import { TokenLocalRepository } from '../../domain/repository/token-local.repository';
 import { TokenEntity } from '../../domain/entities/token.entity';
-import { getItemLocalStorage, saveItemLocalStorage } from '@/src/core/lib/local-storage';
+import {
+  deleteItemLocalStorage,
+  getItemLocalStorage,
+  saveItemLocalStorage,
+} from '@/src/core/lib/local-storage';
 import appConstant from '@/src/constants/app-constant';
 
 @injectable()
 export class TokenLocalRepositoryImpl implements TokenLocalRepository {
+  async delete(): Promise<void> {
+    deleteItemLocalStorage(appConstant.ACCESS_TOKEN_KEY);
+  }
   async get(): Promise<TokenEntity | undefined> {
     const token = getItemLocalStorage<TokenEntity>(appConstant.ACCESS_TOKEN_KEY);
     return token;

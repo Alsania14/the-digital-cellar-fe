@@ -10,8 +10,8 @@ export function GlobalLoading() {
     let resetProgress: NodeJS.Timeout;
     let resetHide: NodeJS.Timeout;
     const onRouteChangeStart = () => {
-      setHideProgress(() => false);
       setProgress(() => 40);
+      setHideProgress(() => false);
     };
     const onRouteChangeComplete = () => {
       setProgress(() => 100);
@@ -20,7 +20,7 @@ export function GlobalLoading() {
         resetHide = setTimeout(() => {
           setHideProgress(true);
         }, 1000);
-      }, 400);
+      }, 1400);
     };
 
     router.events.on('routeChangeStart', onRouteChangeStart);

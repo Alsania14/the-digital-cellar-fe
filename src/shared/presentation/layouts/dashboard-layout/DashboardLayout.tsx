@@ -3,31 +3,62 @@ import {
   IconApps,
   IconEyeCog,
   IconGauge,
+  IconList,
   IconLogout,
   IconSettings2,
   IconUser,
-  IconList,
   IconX,
 } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import Router from 'next/router';
 import { LinksGroup } from '../../components/navbar-link-group/NavBarLinkGroup';
 import { UserButton } from '../../components/user-button/UserButton';
 import classes from './DashboardLayout.module.css';
-
-const mockdata = [
-  { label: 'Home', icon: IconGauge },
-  { label: 'User Management', icon: IconUser },
-  { label: 'How To', icon: IconEyeCog },
-  { label: 'About App', icon: IconApps },
-  { label: 'Setting', icon: IconSettings2 },
-  { label: 'Sign Out', icon: IconLogout },
-];
+import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
+import { AuthUseCase } from '@/src/features/auth/domain/usecase/auth.usecase';
+import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
+import { useMutation } from '@tanstack/react-query';
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const authUseCase = useInjection<AuthUseCase>(CONTAINER_TYPES.AUTH_USECASE);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
+  const { mutate } = useMutation({
+    mutationKey: ['sign-out', 'profile'],
+    mutationFn: async () => {
+      authUseCase.signOut();
+    },
+    onSuccess: () => {
+      Router.replace('/');
+    },
+  });
+  const mockdata = useMemo(
+    () => [
+      {
+        label: 'Home',
+        icon: IconGauge,
+        onClick: () => {
+          Router.replace('/dashboard/home');
+          setIsNavigationOpen(false);
+        },
+      },
+      {
+        label: 'User Management',
+        icon: IconUser,
+        onClick: () => {
+          Router.replace('/dashboard/user-management');
+          setIsNavigationOpen(false);
+        },
+      },
+      { label: 'How To', icon: IconEyeCog },
+      { label: 'About App', icon: IconApps },
+      { label: 'Setting', icon: IconSettings2 },
+      { label: 'Sign Out', icon: IconLogout, onClick: () => mutate() },
+    ],
+    []
+  );
   const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
@@ -40,13 +71,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         {(styles) => (
           <ThemeIcon
-            onClick={() => setIsNavigationOpen(() => true)}
+            onClick={() => {
+              setIsNavigationOpen(() => true);
+            }}
             variant="light"
             size={30}
             style={{
               margin: 10,
               position: 'absolute',
               top: 0,
+
               left: 0,
               cursor: 'pointer',
               ...styles,
@@ -65,7 +99,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         {(styles) => (
           <nav
             className={classes.navbar}
-            style={{ zIndex: 1, position: 'fixed', left: 0, top: 0, bottom: 0, ...styles }}
+            style={{ position: 'fixed', left: 0, top: 0, bottom: 0, ...styles }}
           >
             <Image
               style={{

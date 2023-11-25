@@ -18,4 +18,8 @@ export class AuthUseCaseImpl implements AuthUseCase {
     await this.tokenLocalRepository.set(token);
     return token;
   }
+
+  async signOut(): Promise<void> {
+    await this.tokenLocalRepository.delete();
+  }
 }
