@@ -37,7 +37,7 @@ export default function SignInForm() {
       return token;
     },
     onSuccess: () => {
-      router.push('/dashboard/home');
+      router.replace('/dashboard/home');
     },
     onError: () => {
       modalErrorAction.open();
