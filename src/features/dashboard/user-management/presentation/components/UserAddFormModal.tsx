@@ -1,6 +1,3 @@
-import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
-import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
-import SignatureModal from '@/src/shared/presentation/components/modal/SignatureModal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Flex, LoadingOverlay, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -8,6 +5,9 @@ import { notifications } from '@mantine/notifications';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import SignatureModal from '@/src/shared/presentation/components/modal/SignatureModal';
+import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
+import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { UserDto } from '../../domain/dto/user.dto';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
 import { DefaultException } from '@/src/core/exceptions/default.exception';
@@ -58,7 +58,6 @@ export default function UserAddFormModal({ modalDisclosure }: UserAddFormModalPr
       });
     },
     onError: (e) => {
-      console.log(e);
       if (e instanceof DefaultException) {
         notifications.show({
           title: 'Error !',

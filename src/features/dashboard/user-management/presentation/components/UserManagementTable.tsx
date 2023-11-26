@@ -1,5 +1,3 @@
-import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
-import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 import {
   Box,
   Button,
@@ -21,10 +19,11 @@ import {
   IconSearch,
   IconTrash,
 } from '@tabler/icons-react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { createRef, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { createRef, useCallback, useEffect, useMemo, useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
+import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 import { UserEntity } from '../../domain/entities/UserEntity';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
 

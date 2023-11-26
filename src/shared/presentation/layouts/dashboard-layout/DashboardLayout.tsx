@@ -5,7 +5,6 @@ import {
   IconGauge,
   IconList,
   IconLogout,
-  IconQuestionMark,
   IconSettings2,
   IconUser,
   IconX,
@@ -14,13 +13,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Router from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { notifications } from '@mantine/notifications';
+import { useDisclosure } from '@mantine/hooks';
 import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 import { AuthUseCase } from '@/src/features/auth/domain/usecase/auth.usecase';
 import { LinksGroup } from '../../components/navbar-link-group/NavBarLinkGroup';
 import { UserButton } from '../../components/user-button/UserButton';
 import classes from './DashboardLayout.module.css';
-import { useDisclosure } from '@mantine/hooks';
 import SignatureModal from '../../components/modal/SignatureModal';
 
 type DashboardLayoutProps = {

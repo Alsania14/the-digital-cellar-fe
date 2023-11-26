@@ -3,7 +3,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import UserManagementTable from '../components/UserManagementTable';
 import UserSummaryPaper from '../components/UserSummaryPaper';
-import UserManagementUtil from '../components/UserManagementUtil';
 import UserAddFormModal from '../components/UserAddFormModal';
 import { UserEntity } from '../../domain/entities/UserEntity';
 import UserEditFormModal from '../components/UserEditFormModal';
