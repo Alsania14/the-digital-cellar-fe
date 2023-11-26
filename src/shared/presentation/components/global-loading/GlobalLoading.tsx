@@ -41,6 +41,7 @@ export function GlobalLoading() {
       h={4}
       animated
       color="purple"
+      display={hideProgress ? 'none' : 'block'}
       hidden={hideProgress}
     />
   );

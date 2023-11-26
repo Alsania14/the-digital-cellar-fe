@@ -1,24 +1,15 @@
 import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
+import SignatureModal from '@/src/shared/presentation/components/modal/SignatureModal';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  Box,
-  Button,
-  LoadingOverlay,
-  Modal,
-  Paper,
-  PasswordInput,
-  Text,
-  TextInput,
-} from '@mantine/core';
+import { Box, Button, LoadingOverlay, Paper, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useMutation } from '@tanstack/react-query';
-import { Controller, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { SignInDto } from '../../../domain/dto/sign-in.dto';
 import { AuthUseCase } from '../../../domain/usecase/auth.usecase';
-import SignatureModal from '@/src/shared/presentation/components/modal/SignatureModal';
-import { useRouter } from 'next/navigation';
 
 const signInSchema = z.object({
   email: z.string().email().min(2),
