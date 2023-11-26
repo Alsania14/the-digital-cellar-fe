@@ -12,12 +12,17 @@ import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
 import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 
-const createUserSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email().min(2),
-  password: z.string().min(6),
-  passwordConfirm: z.string().min(6),
-});
+const createUserSchema = z
+  .object({
+    name: z.string().min(2),
+    email: z.string().email().min(2),
+    password: z.string().min(6),
+    passwordConfirm: z.string().min(6),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: "Passwords don't match",
+    path: ['passwordConfirm'],
+  });
 
 type UserAddFormModalProps = {
   user?: UserEntity;
