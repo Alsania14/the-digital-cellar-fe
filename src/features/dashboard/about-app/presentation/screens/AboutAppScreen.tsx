@@ -42,7 +42,7 @@ export default function AboutAppScreen() {
           REACT FE
         </Title>
         <Text mt={30}>
-          • This application uses Next.JS, a React framework.JS which is mature and widely used by
+          • This application uses Next.JS, a React.JS framework which is mature and widely used by
           companies.
         </Text>
         <Text>
