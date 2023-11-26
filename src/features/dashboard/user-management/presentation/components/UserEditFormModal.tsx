@@ -1,6 +1,3 @@
-import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
-import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
-import SignatureModal from '@/src/shared/presentation/components/modal/SignatureModal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Flex, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -8,10 +5,15 @@ import { notifications } from '@mantine/notifications';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useEffect } from 'react';
+import SignatureModal from '@/src/shared/presentation/components/modal/SignatureModal';
+import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
+import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { UserDto } from '../../domain/dto/user.dto';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
+import { UserEntity } from '../../domain/entities/UserEntity';
 
-const createUserSchema = z
+const editUserSchema = z
   .object({
     name: z.string().min(2),
     email: z.string().email().min(2),
@@ -24,9 +26,15 @@ const createUserSchema = z
   });
 
 type UserAddFormModalProps = {
+  user?: UserEntity;
   modalDisclosure: ReturnType<typeof useDisclosure>;
+  setTargetEditUser: (user?: UserEntity) => void;
 };
-export default function UserAddFormModal({ modalDisclosure }: UserAddFormModalProps) {
+export default function UserEditFormModal({
+  modalDisclosure,
+  user,
+  setTargetEditUser,
+}: UserAddFormModalProps) {
   const userManagementUseCase = useInjection<UserManagementUseCase>(
     CONTAINER_TYPES.USER_MANAGEMENT_USECASE
   );
@@ -37,24 +45,34 @@ export default function UserAddFormModal({ modalDisclosure }: UserAddFormModalPr
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<UserDto & { passwordConfirm: string }>({
-    resolver: zodResolver(createUserSchema),
+  } = useForm<UserDto & { passwordConfirm?: string }>({
+    resolver: zodResolver(editUserSchema),
   });
+  useEffect(() => {
+    reset({
+      name: user?.name,
+      email: user?.email,
+      password: '',
+      passwordConfirm: '',
+    });
+  }, [user]);
   const { mutate } = useMutation({
-    mutationKey: ['user-management', 'user-management-page', 'user-add-form-modal'],
-    mutationFn: async (userDto: UserDto) => {
-      await userManagementUseCase.create(userDto);
-    },
+    mutationKey: ['user-management', 'user-management-page', 'user-update-form-modal'],
+    mutationFn: async ({ id, ...userDto }: UserDto & { id: number }) =>
+      userManagementUseCase.update(id, userDto),
     onSuccess: () => {
       notifications.show({
         title: 'Success !',
-        message: 'User created successfully',
+        message: 'Successful Updating User Data',
         color: 'green',
       });
       close?.();
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey.some((value) => value === 'user-management'),
       });
+    },
+    onError: (e) => {
+      console.log('ERROR', e);
     },
   });
 
@@ -63,9 +81,10 @@ export default function UserAddFormModal({ modalDisclosure }: UserAddFormModalPr
       onClose={() => {
         close();
         reset({ email: '', name: '', password: '', passwordConfirm: '' });
+        setTargetEditUser(undefined);
       }}
       opened={opened}
-      title="ADD NEW USER"
+      title="EDIT USER"
     >
       <Flex direction="column" gap={10}>
         <TextInput
@@ -105,8 +124,8 @@ export default function UserAddFormModal({ modalDisclosure }: UserAddFormModalPr
             style={{ flex: 1 }}
             onClick={() =>
               reset({
-                name: '',
-                email: '',
+                name: user?.name,
+                email: user?.email,
                 password: '',
                 passwordConfirm: '',
               })
@@ -114,7 +133,12 @@ export default function UserAddFormModal({ modalDisclosure }: UserAddFormModalPr
           >
             RESET
           </Button>
-          <Button style={{ flex: 1 }} onClick={handleSubmit((data) => mutate(data))}>
+          <Button
+            style={{ flex: 1 }}
+            onClick={handleSubmit((data) => {
+              mutate({ ...data, id: user?.id! });
+            })}
+          >
             SAVE
           </Button>
         </Flex>

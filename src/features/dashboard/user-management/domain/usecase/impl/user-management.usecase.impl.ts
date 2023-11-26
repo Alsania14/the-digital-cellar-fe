@@ -17,4 +17,12 @@ export class UserManagementUseCaseImpl implements UserManagementUseCase {
   async create(userDto: UserDto): Promise<void> {
     await this.userManagementRemoteRepository.create(userDto);
   }
+
+  async update(id: number, userDto: UserDto): Promise<void> {
+    await this.userManagementRemoteRepository.update(id, userDto);
+  }
+
+  async delete(id: number): Promise<void> {
+    await this.userManagementRemoteRepository.delete(id);
+  }
 }

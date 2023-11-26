@@ -1,14 +1,19 @@
-import { Button, Flex, Paper, SimpleGrid, Text, getGradient, useMantineTheme } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
-import DataTable from 'react-data-table-component';
+import { Flex } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 import UserManagementTable from '../components/UserManagementTable';
 import UserSummaryPaper from '../components/UserSummaryPaper';
 import UserManagementUtil from '../components/UserManagementUtil';
 import UserAddFormModal from '../components/UserAddFormModal';
-import { useDisclosure } from '@mantine/hooks';
+import { UserEntity } from '../../domain/entities/UserEntity';
+import UserEditFormModal from '../components/UserEditFormModal';
+import UserDeleteFormModal from '../components/UserDeleteFormModal';
 
 export default function UserManagementScreen() {
   const addUserModalDisclosure = useDisclosure();
+  const editUserModalDisclosure = useDisclosure();
+  const deleteUserModalDisclosure = useDisclosure();
+  const [targetUser, setTargetUser] = useState<UserEntity | undefined>();
   return (
     <Flex
       style={{ minHeight: '100vh', paddingTop: 50, paddingLeft: 10, paddingRight: 10 }}
@@ -18,8 +23,22 @@ export default function UserManagementScreen() {
     >
       <UserManagementUtil modalDisclosure={addUserModalDisclosure} />
       <UserSummaryPaper />
-      <UserManagementTable />
+      <UserManagementTable
+        editModalDisclosure={editUserModalDisclosure}
+        deleteModalDisclosure={deleteUserModalDisclosure}
+        setTargetEditUser={setTargetUser}
+      />
       <UserAddFormModal modalDisclosure={addUserModalDisclosure} />
+      <UserEditFormModal
+        modalDisclosure={editUserModalDisclosure}
+        user={targetUser}
+        setTargetEditUser={setTargetUser}
+      />
+      <UserDeleteFormModal
+        modalDisclosure={deleteUserModalDisclosure}
+        user={targetUser}
+        setTargetEditUser={setTargetUser}
+      />
     </Flex>
   );
 }

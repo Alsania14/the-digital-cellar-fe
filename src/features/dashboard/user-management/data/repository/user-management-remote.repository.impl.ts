@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { UserManagementRemoteRepository } from '../../domain/repository/user-management-remote.repository';
 import { UserEntity } from '../../domain/entities/UserEntity';
-import { get, post } from '../data-source/user-management-remote.data-source';
+import { destroy, get, patch, post } from '../data-source/user-management-remote.data-source';
 import { UsersModelMapper } from '../mapper/users.model.mapper';
 import { UserDto } from '../../domain/dto/user.dto';
 import { UserDtoMapper } from '../mapper/user.dto.mapper';
@@ -17,5 +17,14 @@ export class UserManagementRemoteRepositoryImpl implements UserManagementRemoteR
   async create(userDto: UserDto): Promise<void> {
     const userRemoteDto = UserDtoMapper.toData(userDto);
     await post(userRemoteDto);
+  }
+
+  async update(id: number, userDto: UserDto): Promise<void> {
+    const userRemoteDto = UserDtoMapper.toData(userDto);
+    await patch(id, userRemoteDto);
+  }
+
+  async delete(id: number): Promise<void> {
+    await destroy(id);
   }
 }
