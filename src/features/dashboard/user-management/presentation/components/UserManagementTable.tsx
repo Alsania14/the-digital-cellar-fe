@@ -29,11 +29,13 @@ function NoDataComponent() {
 type UserEditFormModalProps = {
   editModalDisclosure: ReturnType<typeof useDisclosure>;
   deleteModalDisclosure: ReturnType<typeof useDisclosure>;
+  readModalDisclosure: ReturnType<typeof useDisclosure>;
   setTargetEditUser: (user: UserEntity) => void;
 };
 export default function UserManagementTable({
   editModalDisclosure,
   deleteModalDisclosure,
+  readModalDisclosure,
   setTargetEditUser,
 }: UserEditFormModalProps) {
   const userManagementUseCase = useInjection<UserManagementUseCase>(
@@ -102,7 +104,10 @@ export default function UserManagementTable({
               variant="gradient"
               gradient={{ from: 'teal', to: 'teal' }}
               className="btn btn-outline btn-xs"
-              onClick={() => console.log(row.id)}
+              onClick={() => {
+                setTargetEditUser(row);
+                readModalDisclosure[1].open();
+              }}
               size="xs"
             >
               <IconEye size={14} />

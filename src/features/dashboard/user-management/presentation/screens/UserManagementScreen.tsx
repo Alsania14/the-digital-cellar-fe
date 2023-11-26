@@ -8,11 +8,13 @@ import UserAddFormModal from '../components/UserAddFormModal';
 import { UserEntity } from '../../domain/entities/UserEntity';
 import UserEditFormModal from '../components/UserEditFormModal';
 import UserDeleteFormModal from '../components/UserDeleteFormModal';
+import UserReadFormModal from '../components/UserReadFormModal';
 
 export default function UserManagementScreen() {
   const addUserModalDisclosure = useDisclosure();
   const editUserModalDisclosure = useDisclosure();
   const deleteUserModalDisclosure = useDisclosure();
+  const readUserModalDisclosure = useDisclosure();
   const [targetUser, setTargetUser] = useState<UserEntity | undefined>();
   return (
     <Flex
@@ -26,6 +28,7 @@ export default function UserManagementScreen() {
       <UserManagementTable
         editModalDisclosure={editUserModalDisclosure}
         deleteModalDisclosure={deleteUserModalDisclosure}
+        readModalDisclosure={readUserModalDisclosure}
         setTargetEditUser={setTargetUser}
       />
       <UserAddFormModal modalDisclosure={addUserModalDisclosure} />
@@ -36,6 +39,11 @@ export default function UserManagementScreen() {
       />
       <UserDeleteFormModal
         modalDisclosure={deleteUserModalDisclosure}
+        user={targetUser}
+        setTargetEditUser={setTargetUser}
+      />
+      <UserReadFormModal
+        modalDisclosure={readUserModalDisclosure}
         user={targetUser}
         setTargetEditUser={setTargetUser}
       />
