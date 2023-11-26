@@ -53,7 +53,7 @@ export default function UserReadFormModal({
             }}
           >
             <Flex justify="center" align="center" style={{ height: '100%' }}>
-              <Text ta="center" tt="capitalize" fw={600} fz={40}>
+              <Text ta="center" tt="uppercase" fw={600} fz={40}>
                 {user?.name?.at(0) ?? '?'}
               </Text>
             </Flex>
@@ -64,7 +64,8 @@ export default function UserReadFormModal({
           fw={{ base: 700, md: 900 }}
           fz={{ base: 18 }}
           ta="center"
-          tt="capitalize"
+          tt="uppercase"
+          mt={30}
           lineClamp={1}
           component="span"
           gradient={{ from: 'purple', to: 'blue' }}
