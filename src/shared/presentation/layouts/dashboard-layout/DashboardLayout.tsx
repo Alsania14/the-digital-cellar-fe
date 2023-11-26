@@ -9,15 +9,16 @@ import {
   IconUser,
   IconX,
 } from '@tabler/icons-react';
-import { useMemo, useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Router from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
+import { notifications } from '@mantine/notifications';
+import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
+import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
+import { AuthUseCase } from '@/src/features/auth/domain/usecase/auth.usecase';
 import { LinksGroup } from '../../components/navbar-link-group/NavBarLinkGroup';
 import { UserButton } from '../../components/user-button/UserButton';
 import classes from './DashboardLayout.module.css';
-import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
-import { AuthUseCase } from '@/src/features/auth/domain/usecase/auth.usecase';
-import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
-import { useMutation } from '@tanstack/react-query';
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ type DashboardLayoutProps = {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const authUseCase = useInjection<AuthUseCase>(CONTAINER_TYPES.AUTH_USECASE);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
+  const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationKey: ['sign-out', 'profile'],
     mutationFn: async () => {
@@ -55,11 +57,38 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       { label: 'How To', icon: IconEyeCog },
       { label: 'About App', icon: IconApps },
       { label: 'Setting', icon: IconSettings2 },
-      { label: 'Sign Out', icon: IconLogout, onClick: () => mutate() },
+      {
+        label: 'Sign Out',
+        icon: IconLogout,
+        onClick() {
+          mutate();
+          queryClient.clear();
+          notifications.show({
+            title: 'Success sign out, good bye',
+            message: 'See you soon!',
+            color: 'purple',
+          });
+        },
+      },
     ],
     []
   );
   const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+
+  useEffect(() => {
+    notifications.show({
+      title: 'Welcome',
+      message: 'Hello, nice to meet you !.',
+      color: 'purple',
+    });
+    const reseter = setTimeout(() => {
+      setIsNavigationOpen(() => false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(reseter);
+    };
+  }, []);
 
   return (
     <div style={{ height: '100vh', position: 'relative' }}>
@@ -99,7 +128,14 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         {(styles) => (
           <nav
             className={classes.navbar}
-            style={{ position: 'fixed', left: 0, top: 0, bottom: 0, ...styles }}
+            style={{
+              position: 'fixed',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              ...styles,
+              zIndex: 100,
+            }}
           >
             <Image
               style={{

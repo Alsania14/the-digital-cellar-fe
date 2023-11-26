@@ -15,7 +15,13 @@ export default function SignInScreen() {
         w={{ base: 300, md: 350 }}
       />
       <Image
-        style={{ position: 'absolute', bottom: 0, left: 0, zIndex: -1, rotate: '180deg' }}
+        style={{
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          zIndex: -1,
+          rotate: '180deg',
+        }}
         src="/decoration-30.png"
         alt="Decoration"
         fit="contain"

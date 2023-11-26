@@ -35,7 +35,7 @@ export function GlobalLoading() {
   }, []);
   return (
     <Progress
-      style={{ position: 'fixed', zIndex: 2, width: '100%', top: 0 }}
+      style={{ position: 'fixed', zIndex: 2000, width: '100%', top: 0 }}
       value={progress}
       radius={0}
       h={4}
