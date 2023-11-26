@@ -169,7 +169,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   bottom: 0,
                   left: 0,
                   zIndex: -1,
-                  opacity: 0.5,
                   rotate: '180deg',
                 }}
                 src="/decoration-30.png"
