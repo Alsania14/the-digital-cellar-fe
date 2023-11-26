@@ -1,5 +1,5 @@
-export interface UsersModel {
-  data: Datum[];
+export interface PaginationEntity<T> {
+  data: T[];
   links: Links;
   meta: Meta;
 }
@@ -18,12 +18,4 @@ interface Links {
   last?: any;
   prev?: any;
   next?: any;
-}
-
-interface Datum {
-  id: number;
-  name: string;
-  email: string;
-  created_at: string;
-  updated_at: string;
 }

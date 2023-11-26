@@ -1,21 +1,32 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
+import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 import {
+  Box,
   Button,
   Flex,
+  LoadingOverlay,
   Paper,
   Text,
+  TextInput,
   getGradient,
   useMantineColorScheme,
   useMantineTheme,
 } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import {
+  IconEdit,
+  IconEye,
+  IconPlus,
+  IconQuestionMark,
+  IconSearch,
+  IconTrash,
+} from '@tabler/icons-react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { createRef, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { useMemo } from 'react';
-import { IconEdit, IconEye, IconQuestionMark, IconTrash } from '@tabler/icons-react';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
-import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
-import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
+import { NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { UserEntity } from '../../domain/entities/UserEntity';
+import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
 
 function NoDataComponent() {
   return (
@@ -27,12 +38,14 @@ function NoDataComponent() {
 }
 
 type UserEditFormModalProps = {
+  addModalDisclosure: ReturnType<typeof useDisclosure>;
   editModalDisclosure: ReturnType<typeof useDisclosure>;
   deleteModalDisclosure: ReturnType<typeof useDisclosure>;
   readModalDisclosure: ReturnType<typeof useDisclosure>;
   setTargetEditUser: (user: UserEntity) => void;
 };
 export default function UserManagementTable({
+  addModalDisclosure,
   editModalDisclosure,
   deleteModalDisclosure,
   readModalDisclosure,
@@ -42,16 +55,29 @@ export default function UserManagementTable({
     CONTAINER_TYPES.USER_MANAGEMENT_USECASE
   );
   const schema = useMantineColorScheme();
+  const [search, setSearch] = useState<string | undefined>();
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const searchInputRef = createRef<HTMLInputElement>();
   const theme = useMantineTheme();
-  const { data: users } = useQuery({
+  const {
+    data: users,
+    refetch,
+    isFetching,
+  } = useQuery({
     queryKey: ['user-management', 'user-management-page'],
     queryFn: async () => {
-      const data = await userManagementUseCase.get();
+      const data = await userManagementUseCase.get({ search, perPage, page });
       return data;
     },
   });
   const columns = useMemo<TableColumn<UserEntity>[]>(
     () => [
+      {
+        name: '#',
+        maxWidth: '70px',
+        cell: (row, index) => index + 1 + perPage * (page - 1),
+      },
       {
         width: 'auto',
         right: true,
@@ -140,17 +166,69 @@ export default function UserManagementTable({
         ),
       },
     ],
-    []
+    [page]
   );
+  const onChangePage = useCallback((newPage: number) => {
+    setPage(newPage);
+  }, []);
+  const onChangeRowsPerPage = useCallback((newPerPage: number) => {
+    setPerPage(newPerPage);
+  }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [page, perPage, search]);
 
   return (
     <Paper style={{ width: '100%', paddingTop: 20, paddingBottom: 50 }}>
-      <DataTable
-        noDataComponent={<NoDataComponent />}
-        theme={schema.colorScheme === 'dark' ? 'dark' : 'light'}
-        columns={columns}
-        data={users ?? []}
-      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setSearch(searchInputRef.current?.value ?? undefined);
+        }}
+      >
+        <Flex justify="flex-end" mb={10} gap={10}>
+          <Box w={{ base: '100%', md: 300 }}>
+            <TextInput ref={searchInputRef} placeholder="Search users" />
+          </Box>
+          <Box>
+            <Button
+              onClick={() => setSearch(searchInputRef.current?.value ?? undefined)}
+              variant="gradient"
+              gradient={{ from: 'blue', to: 'purple' }}
+            >
+              <IconSearch size={14} />
+            </Button>
+          </Box>
+          <Button
+            onClick={() => addModalDisclosure[1].open()}
+            variant="gradient"
+            gradient={{ from: 'blue', to: 'purple' }}
+          >
+            <IconPlus size={14} style={{ marginRight: 10 }} /> Add new user
+          </Button>
+        </Flex>
+      </form>
+      <Box style={{ position: 'relative' }}>
+        <LoadingOverlay
+          visible={isFetching}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        />
+        <DataTable
+          responsive
+          noDataComponent={<NoDataComponent />}
+          theme={schema.colorScheme === 'dark' ? 'dark' : 'light'}
+          columns={columns}
+          data={users?.data ?? []}
+          paginationPerPage={perPage}
+          paginationDefaultPage={page}
+          paginationTotalRows={users?.meta?.total ?? 0}
+          onChangePage={onChangePage}
+          onChangeRowsPerPage={onChangeRowsPerPage}
+          pagination
+          paginationServer
+        />
+      </Box>
     </Paper>
   );
 }

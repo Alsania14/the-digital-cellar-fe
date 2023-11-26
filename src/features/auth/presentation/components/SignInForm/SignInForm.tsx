@@ -54,6 +54,7 @@ export default function SignInForm() {
             label="Email"
             placeholder="example@thedigitalcellar.com"
             required
+            inputMode="email"
             {...register('email')}
             error={errors.email?.message}
           />

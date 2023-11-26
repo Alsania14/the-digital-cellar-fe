@@ -11213,6 +11213,7 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     next: "npm:14.0.1"
+    next-query-params: "npm:^5.0.0"
     postcss: "npm:^8.4.31"
     postcss-preset-mantine: "npm:1.11.0"
     postcss-simple-vars: "npm:^7.0.1"
@@ -11229,6 +11230,7 @@ __metadata:
     stylelint-config-standard-scss: "npm:^11.1.0"
     ts-jest: "npm:^29.1.1"
     typescript: "npm:5.2.2"
+    use-query-params: "npm:^2.2.1"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
@@ -11679,6 +11681,19 @@ __metadata:
   version: 2.6.2
   resolution: "neo-async@npm:2.6.2"
   checksum: c2f5a604a54a8ec5438a342e1f356dff4bc33ccccdb6dc668d94fe8e5eccfc9d2c2eea6064b0967a767ba63b33763f51ccf2cd2441b461a7322656c1f06b3f5d
+  languageName: node
+  linkType: hard
+
+"next-query-params@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "next-query-params@npm:5.0.0"
+  dependencies:
+    tslib: "npm:^2.0.3"
+  peerDependencies:
+    next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    use-query-params: ^2.0.0
+  checksum: 7ad9b1f2ef53ebd589e5f83f4f8acfa81e4bae713e175f7d2b4d8d9cb515626092dd28d2695398e8a0492db98700e21bd57ec812d51f9b1c14fada040658af13
   languageName: node
   linkType: hard
 
@@ -13869,6 +13884,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"serialize-query-params@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "serialize-query-params@npm:2.0.2"
+  checksum: fdef1e8eb45ce585b12535ab7e546a2583220a2deb969359ccef50519dc541dd6690c00c8de7a2465b9b0b0072a3308b55df77bd568284989df1e72869c9ee3f
+  languageName: node
+  linkType: hard
+
 "serve-static@npm:1.15.0":
   version: 1.15.0
   resolution: "serve-static@npm:1.15.0"
@@ -15482,6 +15504,25 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 1958886fc35262d973f5cd4ce16acd6ce3a66707a72761c93abd1b5ae64e1a11efa83f68e6c8c9bf1647628037980ce59df64cba50adb36bd4071851e70527d2
+  languageName: node
+  linkType: hard
+
+"use-query-params@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "use-query-params@npm:2.2.1"
+  dependencies:
+    serialize-query-params: "npm:^2.0.2"
+  peerDependencies:
+    "@reach/router": ^1.2.1
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+    react-router-dom: ">=5"
+  peerDependenciesMeta:
+    "@reach/router":
+      optional: true
+    react-router-dom:
+      optional: true
+  checksum: 79d07b1adfd67d1e56f5168cea15679cacfb14473ee50d623a6a40e6175779895336c4a447871bc5291c921ec47dfa23bdd312ec76bbd6bbe5e9ea5238ed2d08
   languageName: node
   linkType: hard
 

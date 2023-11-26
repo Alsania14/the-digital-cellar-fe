@@ -6,6 +6,8 @@ import { MantineProvider } from '@mantine/core';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactElement, ReactNode } from 'react';
 import { Notifications } from '@mantine/notifications';
+import NextAdapterPages from 'next-query-params/pages';
+import { QueryParamProvider } from 'use-query-params';
 import { theme } from '../theme';
 import { SignatureContainerProvider } from '@/src/core/ioc/signature-container-context.ioc';
 import { SignatureContainer } from '@/src/core/ioc/signature.ioc';
@@ -19,23 +21,25 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const getLayout = Component.getLayout ?? ((page: any) => page);
   return (
     <QueryClientProvider client={queryClient}>
-      <SignatureContainerProvider container={SignatureContainer}>
-        <MantineProvider theme={theme} defaultColorScheme="dark">
-          <Head>
-            <title>Mantine Template</title>
-            <meta
-              name="viewport"
-              content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
-            />
-            <link rel="shortcut icon" href="/favicon.svg" />
-          </Head>
-          {getLayout(<Component {...pageProps} />)}
-          <Notifications position="top-right" />
-        </MantineProvider>
-      </SignatureContainerProvider>
+      <QueryParamProvider adapter={NextAdapterPages}>
+        <SignatureContainerProvider container={SignatureContainer}>
+          <MantineProvider theme={theme} defaultColorScheme="dark">
+            <Head>
+              <title>Mantine Template</title>
+              <meta
+                name="viewport"
+                content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
+              />
+              <link rel="shortcut icon" href="/favicon.svg" />
+            </Head>
+            {getLayout(<Component {...pageProps} />)}
+            <Notifications position="top-right" />
+          </MantineProvider>
+        </SignatureContainerProvider>
+      </QueryParamProvider>
     </QueryClientProvider>
   );
 }

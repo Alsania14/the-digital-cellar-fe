@@ -3,4 +3,5 @@ import { SignInDto } from '../dto/sign-in.dto';
 
 export interface AuthRemoteRepository {
   signIn(signInDto: SignInDto): Promise<TokenEntity>;
+  signOut(): Promise<void>;
 }

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Flex, PasswordInput, Text, TextInput } from '@mantine/core';
+import { Button, Flex, LoadingOverlay, PasswordInput, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -12,6 +12,7 @@ import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { UserDto } from '../../domain/dto/user.dto';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
 import { UserEntity } from '../../domain/entities/UserEntity';
+import { DefaultException } from '@/src/core/exceptions/default.exception';
 
 const editUserSchema = z
   .object({
@@ -56,7 +57,7 @@ export default function UserEditFormModal({
       passwordConfirm: '',
     });
   }, [user]);
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ['user-management', 'user-management-page', 'user-update-form-modal'],
     mutationFn: async ({ id, ...userDto }: UserDto & { id: number }) =>
       userManagementUseCase.update(id, userDto),
@@ -72,13 +73,26 @@ export default function UserEditFormModal({
       });
     },
     onError: (e) => {
-      console.log('ERROR', e);
+      if (e instanceof DefaultException) {
+        notifications.show({
+          title: 'Error !',
+          message: e.message,
+          color: 'red',
+        });
+      } else {
+        notifications.show({
+          title: 'Error !',
+          message: 'User delete failed',
+          color: 'red',
+        });
+      }
     },
   });
 
   return (
     <SignatureModal
       onClose={() => {
+        if (isPending) return;
         close();
         reset({ email: '', name: '', password: '', passwordConfirm: '' });
         setTargetEditUser(undefined);
@@ -87,6 +101,10 @@ export default function UserEditFormModal({
       title="EDIT USER"
     >
       <Flex direction="column" gap={10}>
+        <LoadingOverlay
+          visible={isPending}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        />
         <TextInput
           label="Name"
           placeholder="A beautiful name"
@@ -97,6 +115,7 @@ export default function UserEditFormModal({
         <TextInput
           label="Email"
           placeholder="example@thedigitalcellar.com"
+          inputMode="email"
           required
           {...register('email')}
           error={errors?.email?.message}

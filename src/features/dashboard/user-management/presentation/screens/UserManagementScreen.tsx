@@ -23,9 +23,9 @@ export default function UserManagementScreen() {
       wrap="wrap"
       direction="column"
     >
-      <UserManagementUtil modalDisclosure={addUserModalDisclosure} />
       <UserSummaryPaper />
       <UserManagementTable
+        addModalDisclosure={addUserModalDisclosure}
         editModalDisclosure={editUserModalDisclosure}
         deleteModalDisclosure={deleteUserModalDisclosure}
         readModalDisclosure={readUserModalDisclosure}

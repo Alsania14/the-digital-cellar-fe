@@ -8,3 +8,9 @@ export const postSignIn = async (signInDto: SignInDataDto): Promise<SignInModel>
     const { data } = await client.post<SignInModel>('/api/v1/auth/sign-in', signInDto);
     return data;
   });
+
+export const postSignOut = async (): Promise<SignInModel> =>
+  remoteErrorHandler(async () => {
+    const { data } = await client.post<SignInModel>('/api/v1/auth/sign-out');
+    return data;
+  });

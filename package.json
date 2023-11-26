@@ -30,12 +30,14 @@
     "axios": "^1.6.2",
     "inversify": "^6.0.2",
     "next": "14.0.1",
+    "next-query-params": "^5.0.0",
     "react": "18.2.0",
     "react-data-table-component": "^7.5.4",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.48.2",
     "reflect-metadata": "^0.1.13",
     "styled-components": "^6.1.1",
+    "use-query-params": "^2.2.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
