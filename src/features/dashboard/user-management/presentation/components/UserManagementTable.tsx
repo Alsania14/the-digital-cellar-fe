@@ -24,7 +24,7 @@ import { createRef, useCallback, useEffect, useMemo, useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
-import { UserEntity } from '../../domain/entities/UserEntity';
+import { UserEntity } from '../../domain/entities/user.entity';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
 
 function NoDataComponent() {
@@ -64,7 +64,7 @@ export default function UserManagementTable({
     refetch,
     isFetching,
   } = useQuery({
-    queryKey: ['user-management', 'user-management-page'],
+    queryKey: ['user-management', 'user-management-page', 'user-management-table'],
     queryFn: async () => {
       const data = await userManagementUseCase.get({ search, perPage, page });
       return data;

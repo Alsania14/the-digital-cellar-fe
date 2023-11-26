@@ -3,12 +3,19 @@ import { remoteErrorHandler } from '@/src/core/utils/remote-error-handler.util';
 import { UsersModel } from '../models/users.model';
 import { UserRemoteDto } from '../dto/user-remote.dto';
 import { PaginationRemoteDto } from '../dto/user-pagination-remote.dto';
+import { UserSummaryModel } from '../models/user-summary.modal';
 
 export const get = async (paginationRemoteDto?: PaginationRemoteDto): Promise<UsersModel> =>
   remoteErrorHandler(async () => {
     const { data } = await client.get<UsersModel>('/api/v1/users', {
       params: paginationRemoteDto,
     });
+    return data;
+  });
+
+export const getSummary = async (): Promise<UserSummaryModel> =>
+  remoteErrorHandler(async () => {
+    const { data } = await client.get<UserSummaryModel>('/api/v1/users/user-summary', {});
     return data;
   });
 

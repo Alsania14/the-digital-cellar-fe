@@ -4,7 +4,7 @@ import { useState } from 'react';
 import UserManagementTable from '../components/UserManagementTable';
 import UserSummaryPaper from '../components/UserSummaryPaper';
 import UserAddFormModal from '../components/UserAddFormModal';
-import { UserEntity } from '../../domain/entities/UserEntity';
+import { UserEntity } from '../../domain/entities/user.entity';
 import UserEditFormModal from '../components/UserEditFormModal';
 import UserDeleteFormModal from '../components/UserDeleteFormModal';
 import UserReadFormModal from '../components/UserReadFormModal';

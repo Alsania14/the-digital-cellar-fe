@@ -1,7 +1,7 @@
 import { Button, Flex, Image, Paper, Text, getGradient, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import SignatureModal from '@/src/shared/presentation/components/modal/SignatureModal';
-import { UserEntity } from '../../domain/entities/UserEntity';
+import { UserEntity } from '../../domain/entities/user.entity';
 
 type UserReadFormModalProps = {
   user?: UserEntity;

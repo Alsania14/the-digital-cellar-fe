@@ -53,6 +53,7 @@ export default function UserAddFormModal({ modalDisclosure }: UserAddFormModalPr
         color: 'green',
       });
       close?.();
+      reset({ email: '', name: '', password: '', passwordConfirm: '' });
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey.some((value) => value === 'user-management'),
       });

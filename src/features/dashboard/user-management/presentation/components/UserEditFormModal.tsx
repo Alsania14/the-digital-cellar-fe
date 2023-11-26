@@ -11,7 +11,7 @@ import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { UserDto } from '../../domain/dto/user.dto';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
-import { UserEntity } from '../../domain/entities/UserEntity';
+import { UserEntity } from '../../domain/entities/user.entity';
 import { DefaultException } from '@/src/core/exceptions/default.exception';
 
 const editUserSchema = z
@@ -68,6 +68,7 @@ export default function UserEditFormModal({
         color: 'green',
       });
       close?.();
+      reset({ email: '', name: '', password: '', passwordConfirm: '' });
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey.some((value) => value === 'user-management'),
       });

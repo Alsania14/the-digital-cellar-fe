@@ -6,7 +6,7 @@ import SignatureModal from '@/src/shared/presentation/components/modal/Signature
 import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 import { useInjection } from '@/src/core/ioc/signature-container-context.ioc';
 import { UserManagementUseCase } from '../../domain/usecase/user-management.usecase';
-import { UserEntity } from '../../domain/entities/UserEntity';
+import { UserEntity } from '../../domain/entities/user.entity';
 import { DefaultException } from '@/src/core/exceptions/default.exception';
 
 type UserDeleteFormModalProps = {

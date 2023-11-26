@@ -64,9 +64,30 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           setIsNavigationOpen(false);
         },
       },
-      { label: 'How To', icon: IconEyeCog },
-      { label: 'About App', icon: IconApps },
-      { label: 'Setting', icon: IconSettings2 },
+      {
+        label: 'How To',
+        icon: IconEyeCog,
+        onClick: () => {
+          Router.replace('/dashboard/how-to');
+          setIsNavigationOpen(false);
+        },
+      },
+      {
+        label: 'About App',
+        icon: IconApps,
+        onClick: () => {
+          Router.replace('/dashboard/about-app');
+          setIsNavigationOpen(false);
+        },
+      },
+      {
+        label: 'Setting',
+        icon: IconSettings2,
+        onClick: () => {
+          Router.replace('/dashboard/setting');
+          setIsNavigationOpen(false);
+        },
+      },
       {
         label: 'Sign Out',
         icon: IconLogout,
@@ -112,7 +133,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               size={30}
               style={{
                 margin: 10,
-                position: 'absolute',
+                position: 'fixed',
                 top: 0,
 
                 left: 0,

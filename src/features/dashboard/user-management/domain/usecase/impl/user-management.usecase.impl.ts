@@ -1,11 +1,12 @@
 import { inject, injectable } from 'inversify';
-import { UserEntity } from '../../entities/UserEntity';
+import { UserEntity } from '../../entities/user.entity';
 import { UserManagementUseCase } from '../user-management.usecase';
 import type { UserManagementRemoteRepository } from '../../repository/user-management-remote.repository';
 import { CONTAINER_TYPES } from '@/src/core/ioc/signature-type.ioc';
 import { UserDto } from '../../dto/user.dto';
 import { PaginationDto } from '@/src/shared/domain/dto/pagination.dto';
 import { PaginationEntity } from '@/src/shared/domain/entities/pagination.entity';
+import { UserSummaryEntity } from '../../entities/user-summary.entity';
 
 @injectable()
 export class UserManagementUseCaseImpl implements UserManagementUseCase {
@@ -14,6 +15,10 @@ export class UserManagementUseCaseImpl implements UserManagementUseCase {
 
   async get(paginationDto?: PaginationDto): Promise<PaginationEntity<UserEntity>> {
     return this.userManagementRemoteRepository.get(paginationDto);
+  }
+
+  async getSummary(): Promise<UserSummaryEntity> {
+    return this.userManagementRemoteRepository.getSummary();
   }
 
   async create(userDto: UserDto): Promise<void> {

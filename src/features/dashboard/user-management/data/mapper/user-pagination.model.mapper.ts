@@ -1,5 +1,5 @@
 import { PaginationEntity } from '@/src/shared/domain/entities/pagination.entity';
-import { UserEntity } from '../../domain/entities/UserEntity';
+import { UserEntity } from '../../domain/entities/user.entity';
 import { UsersModel } from '../models/users.model';
 import { PaginationRemoteDto } from '../dto/user-pagination-remote.dto';
 import { PaginationDto } from '@/src/shared/domain/dto/pagination.dto';

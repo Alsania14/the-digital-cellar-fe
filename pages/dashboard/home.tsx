@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
-import HomeScreen from '@/src/features/dashboard/home/presentation/HomeScreen';
 import RootLayout from '@/src/shared/presentation/layouts/root-layout/RootLayout';
 import { DashboardLayout } from '@/src/shared/presentation/layouts/dashboard-layout/DashboardLayout';
+import HomeScreen from '@/src/features/dashboard/home/presentation/HomeScreen/HomeScreen';
 
 export default function HomePage() {
   return <HomeScreen />;
